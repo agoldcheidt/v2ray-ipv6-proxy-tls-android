@@ -1,0 +1,10 @@
+{
+    "server":"::1",
+    "server_port":10001,
+    "password":"pass1234",
+    "timeout":300,
+    "method":"chacha20-ietf-poly1305",
+    "ipv6_first":true,
+    "plugin":"/usr/bin/v2ray-plugin",
+    "plugin_opts":"server;path=/fiberweb"
+}
