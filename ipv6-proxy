@@ -1,0 +1,127 @@
+#!/bin/bash
+
+# V2Ray IPv6 Proxy TLS
+# https://webhorizon.in/blog/
+# https://github.com/agoldcheidt
+# Original Post: https://talk.lowendspirit.com/discussion/1564/personal-proxy-on-ipv6-nat-ipv4-server
+
+if [ "$EUID" -ne 0 ]
+then 
+    echo 1>&2 "Please run as root"
+    exit 1
+fi
+
+#domain
+domain=$1
+clear
+#Some artwork...
+echo "-----------------------------------------";
+echo " By agoldcheidt for Webhorizon.in"
+echo " +-+-+-+-+-+ +-+-+-+-+ +-+-+-+-+-+ +-+-+-+";
+echo " |V|2|R|a|y| |I|P|v|6| |P|r|o|x|y| |T|L|S|";
+echo " +-+-+-+-+-+ +-+-+-+-+ +-+-+-+-+-+ +-+-+-+";
+echo " 2021.09.27"
+echo "------------------------------------------";
+echo ""
+echo "Here we go!"
+echo "Domain Name: [$domain]"
+sleep 4
+clear
+echo ""
+echo "#### INSTALLING DEPENDENCIES ####"
+echo ""
+sleep 3
+sudo apt -qq update
+sudo apt -qq install nginx wget zip unzip shadowsocks-libev dnsutils -y
+sleep 1
+echo "#### DONE ####"
+clear
+echo ""
+echo "#### ADDING NGINX NEW SERVER BLOCK ####"
+echo ""
+sleep 3
+echo "Backing up the Nginx current configuration..."
+mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.backup
+sleep 1
+echo "done!"
+echo ""
+echo "Download New Nginx configuration..."
+sleep 3
+wget -q --no-check-certificate https://git.io/JzxKI -O /etc/nginx/sites-available/default
+sed -i "s/www.example.com/$domain/g" /etc/nginx/sites-available/default
+sleep 1
+echo "done!"
+echo ""
+echo "Restarting Nginx..."
+sleep 3
+sudo nginx -s reload
+sudo systemctl restart nginx
+sleep 1
+echo "done!"
+sleep 3
+clear
+echo ""
+echo "#### DOWNLOADING SAMPLE BLOG ####"
+echo ""
+sleep 3
+wget https://github.com/arcdetri/sample-blog/archive/master.zip
+unzip -qq master.zip
+mkdir /var/www/html/
+cp -rf sample-blog-master/html/* /var/www/html/
+rm -rf sample-blog-master master.zip
+sleep 1
+echo ""
+echo "#### DONE ####"
+sleep 2
+clear
+echo ""
+echo "#### INSTALLING V2RAY PLUGIN ####"
+echo ""
+sleep 3
+wget https://github.com/shadowsocks/v2ray-plugin/releases/download/v1.3.1/v2ray-plugin-linux-amd64-v1.3.1.tar.gz
+tar -xf v2ray-plugin-linux-amd64-v1.3.1.tar.gz
+cp v2ray-plugin_linux_amd64 /usr/bin/v2ray-plugin
+rm -rf v2ray-plugin-linux-amd64* v2ray-plugin_linux_amd64*
+sleep 1
+echo ""
+echo "#### DONE ####"
+sleep 2
+clear
+echo ""
+echo "#### ADDING NEW SHADOWSOCKS CONFIGURATION ####"
+echo ""
+sleep 3
+echo "Backing up the Shadowsocks current configuration..."
+mv /etc/shadowsocks-libev/config.json /etc/shadowsocks-libev/config.json.backup
+sleep 1
+echo "done!"
+echo ""
+echo "Download New Shadowsocks configuration..."
+sleep 3
+wget -q --no-check-certificate https://git.io/JzxKm -O /etc/shadowsocks-libev/config.json
+sleep 1
+echo "done!"
+echo ""
+echo "Restarting Shadowsocks..."
+sleep 3
+sudo systemctl restart shadowsocks-libev
+sleep 1
+echo "done!"
+echo ""
+echo "Restarting Nginx..."
+sleep 3
+sudo systemctl restart nginx
+sleep 1
+echo "done!"
+sleep 2
+clear
+echo ""
+echo "#### IPV6 PROXY SHOULD BE ONLINE ####"
+echo ""
+sleep 3
+echo "--------------------------------------------";
+echo ""
+nslookup $domain
+echo "--------------------------------------------";
+sleep 1
+echo ""
