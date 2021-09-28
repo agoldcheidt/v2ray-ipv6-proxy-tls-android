@@ -1,0 +1,17 @@
+server {
+        listen [::]:80 default_server;
+        root /var/www/html;
+        index index.html;
+        server_name www.example.com;
+        location / {
+                try_files $uri $uri/ =404;
+        }
+		location /fiberweb {
+		proxy_redirect off;
+		proxy_pass http://[::1]:10001;
+		proxy_http_version 1.1;
+		proxy_set_header Upgrade $http_upgrade;
+		proxy_set_header Connection "upgrade";
+		proxy_set_header Host $http_host;
+		}
+}
