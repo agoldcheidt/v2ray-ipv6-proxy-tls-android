@@ -49,5 +49,5 @@ To connect through this IPv6 proxy, you must install Shadowsocks and V2Ray plugi
 ## Credits
 All credits goes to the [Source Post](https://talk.lowendspirit.com/discussion/1564/personal-proxy-on-ipv6-nat-ipv4-server) and all the great community behind it. Many thanks to [WebHorizon](https://webhorizon.in/) for provide high-speed and reliable VPS instances located on Japan and Poland.
 
-### Support my project at: <a target="_blank" href="https://berryboot.alexgoldcheidt.com/go/support-paypal">https://paypal.me/AlexGoldcheidt</a>
+### Support my project at: <a target="_blank" href="https://alexgoldcheidt.com/go/support-paypal">https://paypal.me/AlexGoldcheidt</a>
 &nbsp;
